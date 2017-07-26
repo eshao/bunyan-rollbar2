@@ -7,22 +7,30 @@ this custom stream can be used to send your error logs to
 ## Example
 
 ```js
-var bunyan = require('bunyan'),
-    bunyanRollbar = require('bunyan-rollbar');
+var bunyan = require('bunyan')
+var bunyanRollbar = require('bunyan-rollbar')
+
+// Tested with v2.1.0 of rollbar
+// You can pass in your own version of rollbar
+var Rollbar = require('rollbar')
+var rollbar = new Rollbar('POST_SERVER_ITEM_ACCESS_TOKEN')
+
+// We strongly recommend you patch Bunyan's standard serializers. See the notes below.
+// This will *mutate* bunyan.stdSerializers.{err,req}.
+bunyan.stdSerializers.req = bunyanRollbar.patchSerializer(bunyan.stdSerializers.req)
+bunyan.stdSerializers.err = bunyanRollbar.patchSerializer(bunyan.stdSerializers.err)
 
 var logger = bunyan.createLogger({
   name: 'mylogger',
   streams: [
     {
-      level: 'warn',
+      level: 'error',
       type: 'raw', // Must be set to raw for use with BunyanRollbar
-      stream: new bunyanRollbar.Stream({
-        rollbarToken: 'YOUR_ROLLBAR_ACCESS_TOKEN',
-        rollbarOptions: {} // Additional options to pass to rollbar.init()
-      }),
-    },
+      stream: new bunyanRollbar.Stream(rollbar)
+    }
   ],
-});
+  serializers: bunyan.stdSerializers
+})
 ```
 
 ## Serializers

@@ -5,7 +5,8 @@ require('chai').should();
 var bunyan = require('bunyan'),
     bunyanRollbar = require('../'),
     http = require('http'),
-    rollbar = require('rollbar'),
+    Rollbar = require('rollbar'),
+    rollbar = new Rollbar('dummy_key'),
     sinon = require('sinon'),
     should = require('chai').should();
 
@@ -30,9 +31,7 @@ describe('bunyan-rollbar', function() {
         streams: [
           {
             level: 'trace',
-            stream: new bunyanRollbar.Stream({
-              rollbarToken: 'dummy_key',
-            }),
+            stream: new bunyanRollbar.Stream(rollbar)
           },
         ],
       });
@@ -49,9 +48,7 @@ describe('bunyan-rollbar', function() {
           {
             level: 'trace',
             type: 'raw',
-            stream: new bunyanRollbar.Stream({
-              rollbarToken: 'dummy_key',
-            }),
+            stream: new bunyanRollbar.Stream(rollbar)
           },
         ],
       });
@@ -70,9 +67,7 @@ describe('bunyan-rollbar', function() {
           {
             level: 'trace',
             type: 'raw',
-            stream: new bunyanRollbar.Stream({
-              rollbarToken: 'dummy_key',
-            }),
+            stream: new bunyanRollbar.Stream(rollbar)
           },
         ],
       });
@@ -118,9 +113,7 @@ describe('bunyan-rollbar', function() {
           {
             level: 'trace',
             type: 'raw',
-            stream: new bunyanRollbar.Stream({
-              rollbarToken: 'dummy_key',
-            }),
+            stream: new bunyanRollbar.Stream(rollbar)
           },
         ],
       });
@@ -184,9 +177,7 @@ describe('bunyan-rollbar', function() {
           {
             level: 'trace',
             type: 'raw',
-            stream: new bunyanRollbar.Stream({
-              rollbarToken: 'dummy_key',
-            }),
+            stream: new bunyanRollbar.Stream(rollbar)
           },
         ],
       });

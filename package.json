@@ -1,17 +1,17 @@
 {
-  "name": "bunyan-rollbar",
-  "version": "0.1.0",
+  "name": "bunyan-rollbar2",
+  "version": "1.0.0",
   "description": "A Bunyan stream plugin to send error logs to Rollbar",
   "main": "index.js",
   "scripts": {
     "test": "grunt"
   },
   "dependencies": {
-    "bunyan": "~1.2.1",
-    "lodash": "~2.4.1",
-    "rollbar": "~0.4.0"
+    "lodash": "~4"
   },
   "devDependencies": {
+    "rollbar": "~2",
+    "bunyan": "~2",
     "chai": "~1.9.2",
     "grunt": "~0.4.5",
     "grunt-cli": "~0.1.13",
@@ -22,16 +22,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/GUI/bunyan-rollbar.git"
+    "url": "https://github.com/eshao/bunyan-rollbar2.git"
   },
   "keywords": [
     "bunyan",
     "rollbar"
   ],
-  "author": "Nick Muerdter <stuff@nickm.org>",
+  "author": "Edwin Shao <eshao@eshao.es>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/GUI/bunyan-rollbar/issues"
+    "url": "https://github.com/eshao/bunyan-rollbar2/issues"
   },
-  "homepage": "https://github.com/GUI/bunyan-rollbar"
+  "homepage": "https://github.com/eshao/bunyan-rollbar2"
 }
