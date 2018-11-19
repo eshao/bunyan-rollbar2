@@ -13,6 +13,15 @@ var levelMapping = {
   60: 'critical'
 }
 
+var isRequest = function (object) {
+  if (!object) {
+    return false
+  }
+  return ['headers', 'protocol', 'url', 'method', 'body', 'route'].some(function (key) {
+    return object[key] !== undefined
+  })
+}
+
 var BunyanRollbar = function () {
   this.initialize.apply(this, arguments)
 }
@@ -41,14 +50,16 @@ _.extend(BunyanRollbar.prototype, {
     // Similar to above, but for the request object. Try to retrieve the real
     // request object to send to Rollbar.
     var request
-    if (record.req && record.req._bunyanRollbarOriginalObject && record.req._bunyanRollbarOriginalObject.connection) {
+    if (record.req && record.req._bunyanRollbarOriginalObject && isRequest(record.req._bunyanRollbarOriginalObject)) {
       request = record.req._bunyanRollbarOriginalObject
-    } else if (record.req && record.req.connection) {
+    } else if (record.req && isRequest(record.req)) {
       request = record.req
     }
 
+    var level = levelMapping[record.level] || 'error'
+
     var payload = {
-      level: levelMapping[record.level] || 'error',
+      level: level,
       custom: record
     }
 
@@ -61,12 +72,13 @@ _.extend(BunyanRollbar.prototype, {
       payload.custom = _.omit(payload.custom, 'req')
     }
 
-    // Rollbar expects errors and general messages to be passed differently.
+    // *request* must precede *payload* even if undefined
+    // so that the payload isn't confused with the request
     if (error) {
-      this.rollbar.handleErrorWithPayloadData(error, payload, request)
+      this.rollbar[level](error, request, payload)
     } else {
       payload.custom = _.omit(payload.custom, 'msg')
-      this.rollbar.reportMessageWithPayloadData(record.msg, payload, request)
+      this.rollbar[level](record.msg, request, payload)
     }
   }
 })
